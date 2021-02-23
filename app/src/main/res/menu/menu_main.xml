@@ -11,7 +11,7 @@
         android:title="@string/action_share"
         android:icon="@drawable/ic_share_black_18dp"
         android:orderInCategory="2"
-        app:showAsAction="ifRoom"
+        app:showAsAction="never"
         app:actionProviderClass="androidx.appcompat.widget.ShareActionProvider" />
 
     <item android:id="@+id/action_settings"

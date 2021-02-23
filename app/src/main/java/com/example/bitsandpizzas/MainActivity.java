@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import androidx.appcompat.widget.ShareActionProvider;
 import androidx.appcompat.widget.Toolbar;
@@ -15,6 +17,8 @@ import androidx.core.view.MenuItemCompat;
 public class MainActivity extends AppCompatActivity {
 
     private ShareActionProvider shareActionProvider;
+    private String[] titles;
+    private ListView drawerList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +26,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
+        titles = getResources().getStringArray(R.array.titles);
+        drawerList = findViewById(R.id.drawer);
+        drawerList.setAdapter(new ArrayAdapter<>(this,
+                android.R.layout.simple_list_item_activated_1, titles));
+
     }
 
     @Override

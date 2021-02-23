@@ -14,6 +14,7 @@ import android.widget.ListView;
 import androidx.appcompat.widget.ShareActionProvider;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.MenuItemCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -23,12 +24,30 @@ public class MainActivity extends AppCompatActivity {
     private ShareActionProvider shareActionProvider;
     private String[] titles;
     private ListView drawerList;
+    private DrawerLayout drawerLayout;
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             selectItem(position);
+        }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        Toolbar toolbar = findViewById(R.id.my_toolbar);
+        setSupportActionBar(toolbar);
+        titles = getResources().getStringArray(R.array.titles);
+        drawerList = findViewById(R.id.drawer);
+        drawerLayout = findViewById(R.id.drawer_layout);
+        drawerList.setAdapter(new ArrayAdapter<>(this,
+                android.R.layout.simple_list_item_activated_1, titles));
+        drawerList.setOnItemClickListener(new DrawerItemClickListener());
+        if (savedInstanceState == null) {
+            selectItem(0);
         }
     }
 
@@ -52,20 +71,18 @@ public class MainActivity extends AppCompatActivity {
         ft.addToBackStack(null);
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         ft.commit();
-
+        setActionBarTitle(position);
+        drawerLayout.closeDrawer(drawerList);
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.my_toolbar);
-        setSupportActionBar(toolbar);
-        titles = getResources().getStringArray(R.array.titles);
-        drawerList = findViewById(R.id.drawer);
-        drawerList.setAdapter(new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_activated_1, titles));
-        drawerList.setOnItemClickListener(new DrawerItemClickListener());
+    private void setActionBarTitle(int position) {
+        String title;
+        if (position == 0){
+            title = getResources().getString(R.string.app_name);
+        } else {
+            title = titles[position];
+        }
+        getActionBar().setTitle(title);
     }
 
     @Override
